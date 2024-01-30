@@ -1,5 +1,5 @@
 {
-  "name": "@tashie/nuxt-cached-cli",
+  "name": "@tashie/nuxi-cached-cli",
   "version": "1.0.1",
   "description": "",
   "type": "module",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "nuxt-cached": "bin/nuxt-cached.js"
+    "nuxt-cached": "bin/nuxi-cached.js"
   },
   "author": "",
   "license": "ISC",
