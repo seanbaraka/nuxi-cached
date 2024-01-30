@@ -24,6 +24,7 @@ async function install() {
     console.log("There was an error", err.message);
     throw new Error("Operation Failed!");
   });
+
   await pipeline(response.body, createWriteStream(tarFile));
   await tar.x({ file: tarFile, cwd: dest });
   await fs.rm(tarFile);
@@ -34,19 +35,8 @@ async function install() {
   }
 }
 
-function download(url, dest) {
-  const file = fs.createWriteStream(dest);
-  https.get(url, (response) => {
-    response.pipe(file);
-    file.on("finish", () => {
-      file.close(cb);
-    });
-  });
-}
-
 function makeExecutable(path) {
   const command = `chmod +x ${path}`;
-  console.log("Executing ", command);
   exec(command, (error) => {
     if (error) {
       console.error(`Error making file executable: ${error}`);

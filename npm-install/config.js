@@ -3,7 +3,7 @@ export const CONFIG = {
    * The name of the binary
    * @type {string}
    */
-  name: "nuxt-cached",
+  name: "nuxi-cached",
 
   /**
    * The directory of the binary in the host machine
