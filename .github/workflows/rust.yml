@@ -53,8 +53,11 @@ jobs:
 
       # Create a new tag (optional, only if you want to create a new tag)
       - name: Create Tag
-        run: git tag ${{ steps.get_version.outputs.version }}
-        # You might want to push the tag or use a more complex versioning scheme
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -a ${{ steps.get_version.outputs.version }} -m "Release ${{ steps.get_version.outputs.version }}"
+          git push origin ${{ steps.get_version.outputs.version }}
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
