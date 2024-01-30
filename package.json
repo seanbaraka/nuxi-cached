@@ -1,5 +1,5 @@
 {
-  "name": "nuxi-cached",
+  "name": "@nuxi-cached/cli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
