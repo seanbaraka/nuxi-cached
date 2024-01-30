@@ -27,7 +27,7 @@ jobs:
           override: true
 
       - name: Build
-        uses: actions-rs/cargo@v3
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release
