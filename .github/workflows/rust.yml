@@ -63,8 +63,10 @@ jobs:
 
       - name: Create Tag
         run: |
-          git tag -a ${{ steps.get_version.outputs.version }} -m "Release ${{ steps.get_version.outputs.version }}"
-          git push origin ${{ steps.get_version.outputs.version }}
+          TAG_NAME="v${{ steps.get_version.outputs.version }}"
+          echo "Creating tag: $TAG_NAME"
+          git tag -a $TAG_NAME -m "Release $TAG_NAME"
+          git push origin $TAG_NAME
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
