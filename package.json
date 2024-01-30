@@ -1,11 +1,14 @@
 {
   "name": "@tashie/nuxt-cached-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "module",
   "scripts": {
     "postinstall": "node ./npm-install/postinstall.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "nuxt-cached": "bin/nuxt-cached.js"
   },
   "author": "",
   "license": "ISC",
