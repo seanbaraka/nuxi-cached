@@ -51,11 +51,13 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
 
-      # Create a new tag (optional, only if you want to create a new tag)
+      - name: Configure Git
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+
       - name: Create Tag
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
           git tag -a ${{ steps.get_version.outputs.version }} -m "Release ${{ steps.get_version.outputs.version }}"
           git push origin ${{ steps.get_version.outputs.version }}
 
