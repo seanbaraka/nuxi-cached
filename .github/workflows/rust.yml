@@ -1,5 +1,9 @@
 name: Build and Release Rust Binary
 
+# Define BINARY_NAME as an environment variable
+env:
+  BINARY_NAME: nuxi-cached
+
 on:
   push:
     branches:
@@ -59,7 +63,6 @@ jobs:
 
       - name: Create archive
         run: |
-          BINARY_NAME=nuxi-cached
           tar -czvf "${BINARY_NAME}-${TARGET}.tar.gz" target/release/"${BINARY_NAME}"
 
       - name: Create release
