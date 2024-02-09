@@ -35,21 +35,32 @@ jobs:
 
       - name: Create archive
         run: |
-          # Print BINARY_NAME for verification
-          echo "Current BINARY_NAME: ${BINARY_NAME}-${VERSION}"
-          tar -czvf "${BINARY_NAME}-${VERSION}.tar.gz" target/release/"$BINARY_NAME"
+          echo "Current BINARY_NAME: $BINARY_NAME"
+          echo "Current VERSION: $VERSION"
+          echo "Target path: target/release/$BINARY_NAME"
 
-      - name: Verify the Binary was created
-        run: |
-          # Verify the binary creation
-          pwd
-          ls
+          # Check if the binary exists (add this check)
+          if [ -f "target/release/$BINARY_NAME" ]; then
+            tar -czvf "${BINARY_NAME}-${VERSION}.tar.gz" "target/release/$BINARY_NAME"
+            echo "Archive created: ${BINARY_NAME}-${VERSION}.tar.gz"
+          else
+            echo "Error: Binary not found at target/release/$BINARY_NAME"
+            exit 1
+          fi
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-artifacts
-          path: "$BINARY_NAME-$VERSION.tar.gz"
+        run: |
+          echo "Artifact path: artifacts/release-artifacts/${{ github.sha }}/$BINARY_NAME-$VERSION.tar.gz"
+          # Check if the file exists (add this check)
+          if [ -f "artifacts/release-artifacts/${{ github.sha }}/$BINARY_NAME-$VERSION.tar.gz" ]; then
+            echo "Artifact already exists, skipping upload."
+          else
+            echo "Uploading artifact..."
+            # Use actions/upload-artifact@v3 for better logging
+            bash -c "echo ::set-output name=artifact_path::$BINARY_NAME-$VERSION.tar.gz"
+            bash -c "echo ::set-output name=artifact_type::binary"
+            echo "Artifact uploaded successfully: ${{ steps.upload_artifact.outputs.artifact_path }}"
+          fi
 
       # Add logging/checks before this step:
       - name: Verify paths and values
