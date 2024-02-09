@@ -57,12 +57,20 @@ jobs:
           name: release-artifacts
           path: "artifacts/release-artifacts/${{ github.sha }}/${{ env.BINARY_NAME}}-${{ env.VERSION}}.tar.gz"
 
-      - name: Upload artifact to release
+      - name: Upload artifact to release (optional)
+        if: ${{ always() }} # Ensure this step always runs for debugging
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.repos.url }}/releases/${{ github.sha }}/assets
-          asset_path: "artifacts/release-artifacts/${{ github.sha }}/${BINARY_NAME}-${VERSION}.tar.gz"
-          asset_name: "${BINARY_NAME}-${VERSION}.tar.gz"
+          asset_path: "artifacts/release-artifacts/${{ github.sha }}/$BINARY_NAME-${VERSION}.tar.gz"
+          asset_name: "${{ env.BINARY_NAME }}-${{ env.VERSION }}.tar.gz"
           asset_content_type: application/gzip
+
+      # Add logging, checks, and conditional execution as needed before this step:
+      - name: Verify paths and values
+        run: |
+          echo "Expected upload path: ${{ github.repos.url }}/releases/${{ github.sha }}/assets"
+          echo "Expected asset path: artifacts/release-artifacts/${{ github.sha }}/$BINARY_NAME-$VERSION.tar.gz"
+          ls -lah "artifacts/release-artifacts/${{ github.sha }}/$BINARY_NAME-$VERSION.tar.gz"
