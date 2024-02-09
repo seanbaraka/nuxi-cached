@@ -1,9 +1,5 @@
 name: Build and Release Rust Binary
 
-# Define BINARY_NAME as an environment variable
-env:
-  BINARY_NAME: nuxi-cached
-
 on:
   push:
     branches:
@@ -11,6 +7,10 @@ on:
 
 jobs:
   build:
+    # Define BINARY_NAME as an environment variable
+    env:
+      BINARY_NAME: nuxi-cached
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -85,7 +85,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BINARY_NAME: nuxi-cached
         with:
           upload_url: ${{ github.repos.url }}/releases/${{ github.sha }}/assets
           asset_path: artifacts/release-artifacts/${{ github.sha }}/${BINARY_NAME}-${TARGET}.tar.gz
