@@ -51,6 +51,7 @@ jobs:
           if [ -f "target/release/$BINARY_NAME" ]; then
             tar -czvf "${BINARY_NAME}-${VERSION}.tar.gz" "target/release/$BINARY_NAME"
             echo "Archive created: ${BINARY_NAME}-${VERSION}.tar.gz"
+            mv "${BINARY_NAME}-${VERSION}.tar.gz" artifacts/release-artifacts/${{ github.sha }}
           else
             echo "Error: Binary not found at target/release/$BINARY_NAME"
             exit 1
@@ -60,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release-artifacts
-          path: "artifacts/release-artifacts/${{ github.sha }}/${BINARY_NAME}-${VERSION}.tar.gz"
+          path: "artifacts/release-artifacts/${{ github.sha }}/${{ env.BINARY_NAME}}-${{ env.VERSION}}.tar.gz"
 
       - name: Upload artifact to release (optional)
         uses: actions/upload-release-asset@v1
