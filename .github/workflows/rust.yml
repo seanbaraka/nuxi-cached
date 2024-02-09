@@ -64,7 +64,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.repos.url }}/releases/${{ github.sha }}/assets
-          asset_path: "artifacts/release-artifacts/${{ github.sha }}/$BINARY_NAME-${VERSION}.tar.gz"
+          asset_path: "artifacts/release-artifacts/${{ github.sha }}/${{ env.BINARY_NAME }}-${{ env.VERSION }}.tar.gz"
           asset_name: "${{ env.BINARY_NAME }}-${{ env.VERSION }}.tar.gz"
           asset_content_type: application/gzip
 
