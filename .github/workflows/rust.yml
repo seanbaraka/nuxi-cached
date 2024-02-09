@@ -39,6 +39,11 @@ jobs:
           echo "Current BINARY_NAME: ${BINARY_NAME}-${VERSION}"
           tar -czvf "${BINARY_NAME}-${VERSION}.tar.gz" target/release/"$BINARY_NAME"
 
+      - name: Verify the Binary was created
+        run: |
+          # Verify the binary creation
+          pwd
+
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
