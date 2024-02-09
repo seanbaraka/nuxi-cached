@@ -29,44 +29,20 @@ jobs:
           VERSION=$(grep 'version = ' Cargo.toml | sed 's/version = "\(.*\)"/\1/')
           echo "Current version: $VERSION"
 
-      - name: Bump version on commit message
-        id: bump_version_commit
-        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          if grep -q 'bump minor' <<< "$GITHUB_EVENT_BODY"; then
-            NEW_VERSION=$(echo $VERSION | sed 's/[^0-9.]*\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)$/\1.(\2+1).0/')
-          elif grep -q 'bump major' <<< "$GITHUB_EVENT_BODY"; then
-            NEW_VERSION=$(echo $VERSION | sed 's/[^0-9.]*\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)$/\1.0.(\2+1)/')
-          else
-            NEW_VERSION=$VERSION
-          fi
-          echo "New version based on commit message: $NEW_VERSION"
-
-      - name: Update Cargo.toml
-        run: |
-          sed -i "s/version = '$VERSION'/version = '$NEW_VERSION'/" Cargo.toml
-
-      - name: Commit changes
-        run: |
-          git config user.name 'GitHub Actions'
-          git config user.email 'github-actions@github.com'
-          git add Cargo.toml
-          git commit -m "Bump version to $NEW_VERSION"
-
       - name: Build the binary
         run: cargo build --release
 
       - name: Create archive
         run: |
           # Print BINARY_NAME for verification
-          echo "Current BINARY_NAME: $BINARY_NAME"
-          tar -czvf "${BINARY_NAME}-${TARGET}.tar.gz" target/release/"$BINARY_NAME"
+          echo "Current BINARY_NAME: ${BINARY_NAME}-${VERSION}"
+          tar -czvf "${BINARY_NAME}-${VERSION}.tar.gz" target/release/"${BINARY_NAME}-${VERSION}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: release-artifacts
-          path: "${BINARY_NAME}-${TARGET}.tar.gz"
+          path: "${BINARY_NAME}-${VERSION}.tar.gz"
 
       - name: Upload artifact to release
         uses: actions/upload-release-asset@v1
@@ -74,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.repos.url }}/releases/${{ github.sha }}/assets
-          asset_path: artifacts/release-artifacts/${{ github.sha }}/"${BINARY_NAME}-${TARGET}.tar.gz"
-          asset_name: "${BINARY_NAME}-${TARGET}.tar.gz"
+          asset_path: artifacts/release-artifacts/${{ github.sha }}/"${BINARY_NAME}-${VERSION}.tar.gz"
+          asset_name: "${BINARY_NAME}-${VERSION}.tar.gz"
           asset_content_type: application/gzip
