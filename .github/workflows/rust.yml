@@ -33,6 +33,14 @@ jobs:
       - name: Build the binary
         run: cargo build --release
 
+      - name: Create directory for artifacts (with error handling)
+        run: |
+          mkdir -p "artifacts/release-artifacts/${{ github.sha }}" || {
+            echo "Error: Could not create artifacts directory. Stopping workflow."
+            exit 1
+          }
+          echo "Created artifacts directory: artifacts/release-artifacts/${{ github.sha }}"
+
       - name: Create archive
         run: |
           echo "Current BINARY_NAME: $BINARY_NAME"
