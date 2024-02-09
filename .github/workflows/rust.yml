@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release-artifacts
-          path: "${BINARY_NAME}-${VERSION}.tar.gz"
+          path: "$BINARY_NAME-$VERSION.tar.gz"
 
       # Add logging/checks before this step:
       - name: Verify paths and values
