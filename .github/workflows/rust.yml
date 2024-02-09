@@ -85,6 +85,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BINARY_NAME: nuxi-cached
         with:
           upload_url: ${{ github.repos.url }}/releases/${{ github.sha }}/assets
           asset_path: artifacts/release-artifacts/${{ github.sha }}/${BINARY_NAME}-${TARGET}.tar.gz
