@@ -28,6 +28,7 @@ jobs:
         run: |
           VERSION=$(grep 'version = ' Cargo.toml | sed 's/version = "\(.*\)"/\1/')
           echo "Current version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build the binary
         run: cargo build --release
